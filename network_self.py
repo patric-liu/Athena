@@ -17,8 +17,8 @@ Randomly generates parameters for a new network
 class Network(object):
 
 	def __init__(self, sizes):			
-		# Initializes the Characteristics of the Network
-
+		'''Initializes the Characteristics of the Network
+		'''
 		# defines network shape: a list with the sizes of each layer in order
 		self.sizes = sizes
 		# number of network layers, including input and output layer
@@ -38,13 +38,15 @@ class Network(object):
 						for x, y in zip(self.sizes[:-1], self.sizes[1:])]
 
 	def feedforward(self, a): 			
-		# Return the output of the network for input 'a'
+		'''Return the output of the network for input 'a'
+		'''
 		for b, w in zip( self.biases,self.weights ):
 			a = sigmoid(np.array(np.dot(w, a)) + b)
 		return a
 
 	def feedforward_minus_last(self, a): 			
-		# Return the output of the network for input 'a'
+		'''Return the output of the network for input 'a'
+		'''
 		for n in range(self.num_layers-2):
 			b = self.biases[n]
 			w = self.weights[n]

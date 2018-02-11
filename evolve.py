@@ -27,18 +27,15 @@ class Evolution(object):
 		it with an evolved one
 		
 		population_size: number of clones to make/evaluate each generation
-		
 		mutation_rate: amount by which the clones vary from the parent
-		
 		selection_bias: how strongly the weights favor better performance
-		
 		inheritance_rate: amount by which the child varies from the parent
-		
 		generations: number of generations to evolve over
-
 
 		'''
 		for generation in range(generations):
+			print()
+			print("generation", generation + 1, ':')
 
 			# creates clones of original network
 			self.clone_parent(population_size, mutation_rate)
@@ -51,6 +48,15 @@ class Evolution(object):
 			self.reproduce(selection_bias, inheritance_rate, population_size)
 
 	def clone_parent(self, population_size, mutation_rate):
+		''' Clone Parent
+		Creates clones of parent network each with slight mutations
+		Mutations are slight adjustments, positive or negative, made 
+		to the weights and biases of the parent network
+
+		population_size: number of clones to create
+		mutation_rate: standard deviation of mutations
+
+		'''
 		self.mutations = []
 		self.clones = []
 		for n in range(population_size):
@@ -70,25 +76,31 @@ class Evolution(object):
 			self.clones.append(clone_parameters)
 
 	def determine_fitness(self, population_size):
-		self.times = []				# time or distance is used as a fitness metric for testing purposes, time will be used for final product
-		self.distances = []			# distance is currently being used for testing
+		''' Determine Fitness
+		Returns a fitness value for each clone by determining performance in simulation.
+		Fitness is evaluated primarily based on race performance (time, distance), but
+		undesireable behaviors such as letting the battery voltage stay too low will be
+		punished with a decrease in fitness value.
+		'''
+		self.times = []				# times taken to complete race
+		self.distances = []			# TEMP distances 
 		self.environment = [100000] # **temporary replacement for a real environment **
 		
 		# runs each clone through simulation to determine its fitness
 		for n in range(population_size): 
-
 			# export clone's network parameters and environment to set up a race
 			competition = race.Race(self.clones[n], self.environment)
-			# runs through a race allowing clone to determine strategy
+			# runs through a race allowing clone network to determine strategy
 			competition.race()
+			# aborts evolution proccess if a fatal error occurs
 			self.abort_evolution = competition.abort
 
-			self.distances.append(competition.car.position/1000) # testing: saves the distance traveled
-		self.times = self.distances # temporary convenience measure for testing purposes
+			self.distances.append(competition.car.position/1000) # TEMP saves the distance traveled
+		self.times = self.distances # TEP temporary convenience measure 
 
-		#print()
-		#print(self.distances)
-		#print('generation average distance: ', np.sum(self.distances)/population_size)
+
+		print(self.distances)
+		print('average distance: ', np.sum(self.distances)/population_size)
 
 	def reproduce(self, selection_bias, inheritance_rate, population_size):
 			''' Reproduce - creates a child network based on clone performance
