@@ -34,4 +34,6 @@ This evolutionary approach relies on accurate yet efficient simulations of relev
 ## Aside
 
 
+
+
 Solar vehicle racing is at its core, a challenge of vehicle energy efficiency and energy management. When building a solar vehicle, vast amounts of time are rightfully spent on design, manufacturing, and testing for reliability - the building of the car. However once at the race, much of this effort can be quickly negated if race strategy is conducted poorly. Hopefully, Athena can support my team during the race and allow the vehicle that everyone spent so long desinging and building to perform to the best of its ability. 
