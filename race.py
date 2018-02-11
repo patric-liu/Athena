@@ -21,8 +21,8 @@ class Race(object):
 		self.mutated_network_initializer()
 		
 		# Initializes vehicle, including its position and time
-		self.initialize_car()
-		self.set_car_constants()
+		self.argo = car.Argo()
+		self.argo.set_constants()
 
 		self.abort = False
 		max_race_time = self.environment[0] / 20 # time in seconds taken to finish race at n m/s
@@ -71,30 +71,3 @@ class Race(object):
 		self.inputs[1] = battery_charge
 		self.inputs[2] = time_hour
 		self.inputs[3] = float(distance_from_finish)
-
-	def initialize_car(self):
-		# Starting racing conditions of the car
-		self.argo = car.Argo(
-			starting_position =0, 
-			starting_time = 0, 
-			starting_charge = 1.6e7, 
-			panel_temperature = 25,
-			time_step = 600, 
-			clock_time = 0, 
-			cell_voltage = 3.5
-			)
-
-	def set_car_constants(self):
-		# Properties of the car
-		self.argo.set_constants(
-			mass = 240,
-			E_regen = 0.8, 
-			max_charge = 1.6e7, 
-			Cd = 0.12, 
-			Crr = 0.03,
-			Frontal_Area = 1, 
-			solar_hour = -4, 
-			panel_area = 6 , 
-			basecell_efficiency = 0.16,
-			battery_inefficiency = 0.00005
-			)

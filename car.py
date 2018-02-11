@@ -4,6 +4,9 @@ from math import pi as pi
 from math import sin as sin
 from math import cos as cos
 from math import acos
+import all_parameters
+para = all_parameters.Parameters()
+
 
 ''' Contains functions modeling the physical behavior of the car
 
@@ -14,41 +17,42 @@ given a velocity, timestep, and environment
 
 class Argo(object):
 
-	def __init__(self, starting_position =0, starting_time = 0, starting_charge = 0, 
-		battery_temperature = 25, panel_temperature = 25, time_step = 600, 
-		clock_time = 0, cell_voltage = 3.5):
+	def __init__(self, 
+		starting_position = para.starting_position, 
+		starting_time = para.race_time, 
+		starting_charge = para.starting_battery_charge, 
+		battery_temperature = 25, 
+		panel_temperature = 25, 
+		time_step = para.time_step, 
+		starting_solar_hour = para.starting_solar_hour, 
+		cell_voltage = 3.5):
 		
 		# states
 		self.position = starting_position # distance from start of race (meters)
 		self.race_time = starting_time # time since start of race (seconds)
-		self.clock_time = clock_time # time to solar hour
+		self.clock_time = starting_solar_hour # time to solar hour
 		self.battery_charge = starting_charge # charge at start of race
 		self.time_step = time_step # time spent at a velocity
-		self.pack_voltage = 28*cell_voltage # TEMP voltage of battery pack
+		self.pack_voltage = 28 * cell_voltage # TEMP voltage of battery pack
 
 
-	def set_constants(self, mass, E_regen, max_charge, Cd, Crr,
-					Frontal_Area, solar_hour, panel_area, basecell_efficiency,
-					battery_inefficiency):
+	def set_constants(self):
 		#Car Constants
-		self.mass = mass
+		self.mass = para.car_mass
 
 		#Battery Constants
-		self.E_regen = E_regen
-		self.power_inefficiency = battery_inefficiency 
-		self.max_charge = max_charge
+		self.E_regen = para.regen_efficiency
+		self.power_inefficiency = 0.001
+		self.max_charge = para.battery_max_charge
 
 		#Motion Constants
-		self.Cd = Cd # coefficient of drag
-		self.Crr = Crr # coefficient of rolling resistance
-		self.Frontal_Area = Frontal_Area
-
-		#Location Constants
-		self.solar_hour = solar_hour # (need to fix redundancy) also time to solar hour
+		self.Cd = para.Cd
+		self.Crr = para.Crr
+		self.Frontal_Area = para.frontal_area
 		
 		#Panel Constants
-		self.panel_area = panel_area # available panel area
-		self.basecell_efficiency = basecell_efficiency # solar cell efficiency
+		self.panel_area = para.panel_area
+		self.basecell_efficiency = para.solarcell_base_efficiency
 		self.irradiance()
 
 	def update_state(self, velocity):
@@ -84,7 +88,7 @@ class Argo(object):
 	
 	def irradiance(self):
 		# find solar power incident to solar array (not absorbed)
-		self.sensor_solar_p = 1000 * cos(self.solar_hour*pi/12)**1.5
+		self.sensor_solar_p = 1000 * cos(self.clock_time*pi/12)**1.5
 		return self.sensor_solar_p
 
 	def motion_loss(self, velocity):

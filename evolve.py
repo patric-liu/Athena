@@ -1,5 +1,7 @@
 import numpy as np
 import race
+import all_parameters
+para = all_parameters.Parameters()
 
 ''' Uses Evolutionary Models to improve network
 
@@ -16,16 +18,16 @@ class Evolution(object):
 
 	def __init__(self, parameters):
 		# import network from trainer
-
-
 		self.parameters = parameters
 		self.sizes = self.parameters[2]
 		self.biases = self.parameters[0]
 		self.weights = self.parameters[1]
 
-
-	def evolve(self, population_size, mutation_rate, selection_bias, 
-				inheritance_rate, generations):
+	def evolve(self, population_size = para.population_size, 
+					mutation_rate = para.mutation_rate, 
+					selection_bias = para.selection_bias , 
+					inheritance_rate = para.inheritance_rate, 
+                	generations = para.generations):
 		''' Evolve
 		Main training method, taking original network (self.parameters) and 
 		replaces it with an evolved one
@@ -92,7 +94,6 @@ class Evolution(object):
 
 		# runs each clone through simulation to determine its fitness
 		for n in range(population_size): 
-			#print('clone',n, '****************************************')
 			# export clone's network parameters and environment to set up a race
 			competition = race.Race(self.clones[n], self.environment)
 			# runs through a race allowing clone network to determine strategy
@@ -103,14 +104,9 @@ class Evolution(object):
 			performance = competition.argo.position ** 2 / competition.argo.race_time / 10
 
 			self.performances.append(performance)
-		#self.times = self.distances # TEP temporary convenience measure 
 
-
-		#print(self.distances)
-		#print('average distance: ', np.sum(self.distances)/population_size)
-		#print('average time: ', np.sum(self.times)/population_size)
 		print('average performance: ', np.sum(self.performances)/population_size)
-		#print()
+
 
 	def reproduce(self, selection_bias, inheritance_rate, population_size):
 			''' Reproduce - creates a child network based on clone performance
@@ -118,7 +114,6 @@ class Evolution(object):
 			is applied to the original network. Weights are proportional 
 			to (clone performance[i] - average clone performance)^selection_bias
 			Inheritance rate scales how big the new mutation is. 
-
 			'''
 
 			# Create list of weights
@@ -150,7 +145,7 @@ class Evolution(object):
 
 
 
-			# Determien and display performance of child network
+			# Determine and display performance of child network
 			competition = race.Race(child_net, self.environment)
 			competition.race()
 			print('new gen: ', competition.argo.position **

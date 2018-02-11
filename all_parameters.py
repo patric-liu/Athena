@@ -10,7 +10,7 @@ class Parameters(object):
         self.Cd = 0.11 # Coefficient of drag
         self.Crr = 0.0013 # Coefficient of rolling resistance
 
-        self.frontal_Area = 1 # m^2
+        self.frontal_area = 1 # m^2
         self.panel_area = 4 # m^2
         self.solarcell_base_efficiency = 0.237 # %
         self.battery_internal_resistance = 1.3 # ohlms
@@ -34,8 +34,8 @@ class Parameters(object):
         self.time_step = 600 # seconds
 
         # Starting Race Conditions
-        self.starting_position = 0 # meters
-        self.race_time = 0 # seconds
+        self.starting_position = 0 # meters, 0 by default
+        self.race_time = 0 # seconds, 0 by default
         self.starting_solar_hour = -6 # hours after noon
         self.starting_battery_charge = 1.6e7 # joules
 
