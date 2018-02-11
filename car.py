@@ -12,7 +12,7 @@ given a velocity, timestep, and environment
 
 '''
 
-class Car(object):
+class Argo(object):
 
 	def __init__(self, starting_position =0, starting_time = 0, starting_charge = 0, 
 		battery_temperature = 25, panel_temperature = 25, time_step = 600, 
@@ -32,16 +32,20 @@ class Car(object):
 					battery_inefficiency):
 		#Car Constants
 		self.mass = mass
+
 		#Battery Constants
 		self.E_regen = E_regen
 		self.power_inefficiency = battery_inefficiency 
 		self.max_charge = max_charge
+
 		#Motion Constants
 		self.Cd = Cd # coefficient of drag
 		self.Crr = Crr # coefficient of rolling resistance
 		self.Frontal_Area = Frontal_Area
+
 		#Location Constants
 		self.solar_hour = solar_hour # (need to fix redundancy) also time to solar hour
+		
 		#Panel Constants
 		self.panel_area = panel_area # available panel area
 		self.basecell_efficiency = basecell_efficiency # solar cell efficiency
@@ -52,6 +56,7 @@ class Car(object):
 		self.race_time += self.time_step # update time since start of race (seconds)
 		self.clock_time += self.time_step/3600 # update clock time (hours)
 		self.update_battery_charge(velocity) # update battery charge
+		#print(self.position, 'meters' , self.race_time, 'seconds')
 		return 
 
 	def update_battery_charge(self, velocity):

@@ -11,8 +11,7 @@ class Race(object):
 		self.sizes = parameters[2]
 		self.environment = environment
 		# Performance metrics
-		self.race_time = 0
-		#self.average_speed = 0 # Going to be used later as a metric of success
+		self.performance = 0
 
 	def race(self):
 		''' Race simulates a race given a certain set of conditions: network(policy),
@@ -25,37 +24,22 @@ class Race(object):
 		self.initialize_car()
 		self.set_car_constants()
 
-		stop = 0 # TEMP counter used to measure distance traveled rather than time taken
 		self.abort = False
-		
+		max_race_time = self.environment[0] / 20 # time in seconds taken to finish race at n m/s
+
 		while True:
-			stop += 1
-
-			# Prepare inputs to neural network
 			self.get_nn_inputs()
-
-			# Find output velocity from neural network
 			velocity = self.mutated_network.feedforward_minus_last(self.inputs)
+			self.argo.update_state(velocity)
 
-			if velocity == 0: #TEMP end race if network output is 0
-				self.abort = True
+			if self.inputs[3] < 0:		
+				break 
+
+			if self.argo.race_time > max_race_time:
 				break
 
-			# Update car state based on velocity
-			self.car.update_state(velocity)
 
-			#if velocity > 0:
-				#print('velocity ', velocity, 'm/s')
-				#print('racetime ', self.car.race_time/60, 'minutes')
-				#print('distance ', self.car.position/1000, 'km')
-				#print('charge   ', self.car.battery_charge/1000, 'kJ')
-				#print()
-				
-			self.race_time = self.car.race_time
-			if self.inputs[0] < 0: # end race if reached finish line
-				break
-			if stop == 10:	# TEMP end race after 10 time steps 
-				break
+
 
 	def mutated_network_initializer(self):
 		# exports network parameters to network_self class
@@ -70,25 +54,27 @@ class Race(object):
 		'''
 
 		# distance from finish line information
-		inverse_distance_to_finish = ((self.environment[0]-self.car.position/1e6)**-1)/10
-		
+		distance_from_finish = ((self.environment[0]-self.argo.position))
+		inverse_distance_to_finish = ((self.environment[0]-self.argo.position/1e6)**-1)/10
+
 		# battery state as a percentage
-		battery_charge = self.car.battery_charge/self.car.max_charge
+		battery_charge = self.argo.battery_charge/self.argo.max_charge
 		
 		# time of day - hours from solar hour (noon)
-		time_hour = self.car.clock_time/6
+		time_hour = self.argo.clock_time/6
 
-		input_size = 3 #number of input neurons
+		input_size = 4 #number of input neurons
 
 		# input must be an np.array of shape (input_size, 1)
 		self.inputs = np.zeros( (input_size,1) )
-		self.inputs[0] = inverse_distance_to_finish
+		self.inputs[0] = float(inverse_distance_to_finish)
 		self.inputs[1] = battery_charge
 		self.inputs[2] = time_hour
+		self.inputs[3] = float(distance_from_finish)
 
 	def initialize_car(self):
 		# Starting racing conditions of the car
-		self.car = car.Car(
+		self.argo = car.Argo(
 			starting_position =0, 
 			starting_time = 0, 
 			starting_charge = 1.6e7, 
@@ -100,7 +86,7 @@ class Race(object):
 
 	def set_car_constants(self):
 		# Properties of the car
-		self.car.set_constants(
+		self.argo.set_constants(
 			mass = 240,
 			E_regen = 0.8, 
 			max_charge = 1.6e7, 

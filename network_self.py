@@ -2,15 +2,15 @@ import random
 import numpy as np 
 
 ''' Neural Network
+Provides functionality for neural network 
 
 feedforward(input):
-Returns the neural network output given its parameters and a certain input
-
+	Returns the neural network output given its parameters and a certain input
 feedforward_minus_list(input):
-Same as feedforward method but the activation function of the last layer is ReLu
-
+	Same as feedforward method but the activation function of the last layer 
+	is ReLu
 weight_initializer():
-Randomly generates parameters for a new network
+	Randomly generates parameters for a new network
 
 '''
 
@@ -28,14 +28,17 @@ class Network(object):
 
 	def weight_initializer(self):
 		""" Initializes weights and biases randomly
-		Initializes with a normal distrubtuion, scaled such that the weighted inputs 
-		to the next layer has a standard deviation of 2 and therefore avoids the
-		learning slowdown cause by the slope of the sigmoid function at abs(z) >> 1
+		Initializes with a normal distrubtuion, scaled such that the weighted 
+		inputs to the next layer has a standard deviation of 2 and therefore 
+		avoids the learning slowdown cause by the slope of the sigmoid function 
+		at abs(z) >> 1
 		"""
 		self.biases  = [np.random.randn(y, 1) for y in self.sizes[1:]]
 
 		self.weights = [np.random.randn(y, x)/np.sqrt(x) 
 						for x, y in zip(self.sizes[:-1], self.sizes[1:])]
+
+		self.parameters = [self.biases, self.weights, self.sizes]
 
 	def feedforward(self, a): 			
 		'''Return the output of the network for input 'a'
@@ -53,8 +56,10 @@ class Network(object):
 			a = sigmoid(np.dot(w, a) + b)
 		b = self.biases[self.num_layers-2]
 		w = self.weights[self.num_layers-2]
-		z = relu(np.dot(w, a) + b)
-		return z
+		#y = relu(np.dot(w, a) + b)
+		z = np.dot(w, a) + b
+		z = float(z[0][0])
+		return relu(z)
 
 # element-wise sigmoid activation function
 def sigmoid(z):						
@@ -62,6 +67,6 @@ def sigmoid(z):
 
 def relu(z):
 	if z > 0:
-		return z[0][0]
+		return z
 	else:
-		return 0
+		return 0.

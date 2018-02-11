@@ -14,17 +14,21 @@ Child then becomes the original network and this is looped over 'generations'
 
 class Evolution(object):
 
-	def __init__(self, net_sizes, net_biases, net_weights):
+	def __init__(self, parameters):
 		# import network from trainer
-		self.sizes = net_sizes #list of sizes
-		self.biases = net_biases
-		self.weights = net_weights
-		self.parameters = [self.biases, self.weights, self.sizes]
 
-	def evolve(self, population_size, mutation_rate, selection_bias, inheritance_rate, generations):
+
+		self.parameters = parameters
+		self.sizes = self.parameters[2]
+		self.biases = self.parameters[0]
+		self.weights = self.parameters[1]
+
+
+	def evolve(self, population_size, mutation_rate, selection_bias, 
+				inheritance_rate, generations):
 		''' Evolve
-		Main training method, taking original network (self.parameters) and replaces
-		it with an evolved one
+		Main training method, taking original network (self.parameters) and 
+		replaces it with an evolved one
 		
 		population_size: number of clones to make/evaluate each generation
 		mutation_rate: amount by which the clones vary from the parent
@@ -35,7 +39,7 @@ class Evolution(object):
 		'''
 		for generation in range(generations):
 			print()
-			print("generation", generation + 1, ':')
+			print("generation", generation + 1)
 
 			# creates clones of original network
 			self.clone_parent(population_size, mutation_rate)
@@ -77,30 +81,36 @@ class Evolution(object):
 
 	def determine_fitness(self, population_size):
 		''' Determine Fitness
-		Returns a fitness value for each clone by determining performance in simulation.
-		Fitness is evaluated primarily based on race performance (time, distance), but
-		undesireable behaviors such as letting the battery voltage stay too low will be
-		punished with a decrease in fitness value.
+		Returns a fitness value for each clone by determining performance in 
+		simulation. Fitness is evaluated primarily based on race performance 
+		(time, distance), but undesireable behaviors such as letting the battery 
+		voltage stay too low will be punished with a decrease in fitness value.
 		'''
-		self.times = []				# times taken to complete race
-		self.distances = []			# TEMP distances 
-		self.environment = [100000] # **temporary replacement for a real environment **
-		
+
+		self.environment = [300000.] # **temporary replacement for environment**
+		self.performances = []
+
 		# runs each clone through simulation to determine its fitness
 		for n in range(population_size): 
+			#print('clone',n, '****************************************')
 			# export clone's network parameters and environment to set up a race
 			competition = race.Race(self.clones[n], self.environment)
 			# runs through a race allowing clone network to determine strategy
 			competition.race()
 			# aborts evolution proccess if a fatal error occurs
 			self.abort_evolution = competition.abort
+			# evaluate performance
+			performance = competition.argo.position ** 2 / competition.argo.race_time / 10
 
-			self.distances.append(competition.car.position/1000) # TEMP saves the distance traveled
-		self.times = self.distances # TEP temporary convenience measure 
+			self.performances.append(performance)
+		#self.times = self.distances # TEP temporary convenience measure 
 
 
-		print(self.distances)
-		print('average distance: ', np.sum(self.distances)/population_size)
+		#print(self.distances)
+		#print('average distance: ', np.sum(self.distances)/population_size)
+		#print('average time: ', np.sum(self.times)/population_size)
+		print('average performance: ', np.sum(self.performances)/population_size)
+		#print()
 
 	def reproduce(self, selection_bias, inheritance_rate, population_size):
 			''' Reproduce - creates a child network based on clone performance
@@ -112,9 +122,9 @@ class Evolution(object):
 			'''
 
 			# Create list of weights
-			mean_speed = np.sum(self.times)/population_size
-			weights = [(time-mean_speed)**selection_bias * inheritance_rate
-					 for time in self.times]
+			mean_performance = np.sum(self.performances)/population_size
+			weights = [(((performance-mean_performance))/mean_performance)**selection_bias * inheritance_rate
+					 for performance in self.performances]
 
 			# Initialize child network
 			child_net = self.parameters[:]
@@ -122,21 +132,27 @@ class Evolution(object):
 			for parameter_type in [0,1]: # No 2 index to preserve self.sizes
 				for index in range(len(self.sizes)-1):
 
-					# Initialize np array from 1st clone **required to properly sum**
-					parameter_deltas = self.mutations[0][parameter_type][index] * weights[0] * inheritance_rate
+					# Initialize np array from 1st clone **required to sum**
+					parameter_deltas = (self.mutations[0][parameter_type][index]
+									 	* weights[0] * inheritance_rate)
 
-					# Add weighted np arrays from rest of clones,
+					# Add weighted np arrays from rest of clones,		
 					for clone in range(1, population_size):
-						parameter_deltas = parameter_deltas + self.mutations[clone][parameter_type][index] * weights[clone] * inheritance_rate
+						parameter_deltas = (parameter_deltas + 
+								self.mutations[clone][parameter_type][index] * 
+								weights[clone] * 
+								inheritance_rate)
 					
-					# Normalize parameter changes by population size and update child_net
+					# Normalize by population size and update child_net
 					parameter_deltas = parameter_deltas / float(population_size)
-					child_net[parameter_type][index] = child_net[parameter_type][index] + parameter_deltas
+					child_net[parameter_type][index] = (child_net[parameter_type]\
+													[index] + parameter_deltas)
 
 
 
 			# Determien and display performance of child network
 			competition = race.Race(child_net, self.environment)
 			competition.race()
-			print('new gen: ', competition.car.position/1000)
+			print('new gen: ', competition.argo.position **
+			      2 / competition.argo.race_time / 10)
 
