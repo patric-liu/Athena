@@ -1,4 +1,5 @@
 # Athena
+
 Athena is a neural network that determines race strategy for week-long, 3000 km solar vehicle races. It's trained in simulation using evolutionary methods and validated in real physical testing. Once trained, Athena can quickly run during the race and respond to changing weather conditions and unexpected deviations from the proposed strategy.
 
 The evolutionary method used works by creating multiple slightly tweaked versions of Athena, and allows them to determine strategy for a simulated race. At the end of the simulations, Athena is updated based on the performance of each version. This is then repeated, along with real testing, until Athena suprasses our team member's abilities to make strategic decisions. 
