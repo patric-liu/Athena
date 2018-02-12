@@ -2,6 +2,7 @@
 '''
 class Parameters(object):
 
+
     def __init__(self):
         # Car physical properties
         self.car_mass = 240 # kg
