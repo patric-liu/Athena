@@ -1,6 +1,10 @@
 import network_self
 import car
 import numpy as np
+import random
+import all_parameters
+para = all_parameters.Parameters()
+
 
 class Race(object):
 
@@ -32,14 +36,20 @@ class Race(object):
 			velocity = self.mutated_network.feedforward_minus_last(self.inputs)
 			self.argo.update_state(velocity)
 
+			print()
+			print('********************************************')
+			print(velocity, 'm/s')
+			print(self.argo.position, 'meters')
+			print(self.argo.race_time, 'seconds')
+			print(self.argo.clock_time + 12., 'military hour')
+			print(self.argo.battery_charge, 'joules in battery')
+			#print(self.argo.irradiance, 'watts into array')
+
 			if self.inputs[3] < 0:		
 				break 
 
-			if self.argo.race_time > max_race_time:
+			if self.argo.race_time > para.max_race_time:
 				break
-
-
-
 
 	def mutated_network_initializer(self):
 		# exports network parameters to network_self class
@@ -63,7 +73,7 @@ class Race(object):
 		# time of day - hours from solar hour (noon)
 		time_hour = self.argo.clock_time/6
 
-		input_size = 4 #number of input neurons
+		input_size = 5 #para.input_size #number of input neurons
 
 		# input must be an np.array of shape (input_size, 1)
 		self.inputs = np.zeros( (input_size,1) )
@@ -71,3 +81,4 @@ class Race(object):
 		self.inputs[1] = battery_charge
 		self.inputs[2] = time_hour
 		self.inputs[3] = float(distance_from_finish)
+		self.inputs[4] = float(random.uniform(-2,2))

@@ -19,4 +19,4 @@ Train = evolve.Evolution(parameters = Athena.parameters)
 # executes evolutionary model algorithm
 Train.evolve()
 
-print('time taken:', round(time.time() - start_time, 2))
+#print('time taken:', round(time.time() - start_time, 2))

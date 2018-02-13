@@ -53,7 +53,6 @@ class Argo(object):
 		#Panel Constants
 		self.panel_area = para.panel_area
 		self.basecell_efficiency = para.solarcell_base_efficiency
-		self.irradiance()
 
 	def update_state(self, velocity):
 		self.position += self.time_step * velocity # update position (meters)
@@ -65,7 +64,8 @@ class Argo(object):
 
 	def update_battery_charge(self, velocity):
 		# net_power is solar power into panels
-		net_power = self.irradiance()* self.basecell_efficiency * self.panel_area
+		self.irradiance = self.get_irradiance()
+		net_power = self.irradiance * self.basecell_efficiency * self.panel_area
 		self.sensor_solar_p = net_power
 
 		# net_power is the net power TO batteries (not in batteries)
@@ -86,7 +86,7 @@ class Argo(object):
 
 		self.sensor_avg_battery_current = -self.sensor_battery_dCharge/ self.pack_voltage
 	
-	def irradiance(self):
+	def get_irradiance(self):
 		# find solar power incident to solar array (not absorbed)
 		self.sensor_solar_p = 1000 * cos(self.clock_time*pi/12)**1.5
 		return self.sensor_solar_p

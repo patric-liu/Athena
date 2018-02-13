@@ -17,26 +17,28 @@ class Parameters(object):
         self.battery_internal_resistance = 1.3 # ohlms
 
         # Training Hyperparameters
-        self.population_size = 20 
+        self.population_size = 1 
         self.mutation_rate = 0.1
         self.selection_bias = 1
         self.inheritance_rate = 1
-        self.generations = 1000
+        self.generations = 1
 
         # Training Indicators
 
         # Neural Network Parameters
-        self.input_size = 4
+        self.input_size = 5
         self.sizes = [self.input_size, 10, 1]
 
         # Map Generating Parameters
 
         # Simulation Parameters
-        self.time_step = 600 # seconds
+        self.time_step = 1 # seconds
+        self.max_race_time = 10
+        self.environment = [3000.] # TEMP
 
         # Starting Race Conditions
         self.starting_position = 0 # meters, 0 by default
         self.race_time = 0 # seconds, 0 by default
-        self.starting_solar_hour = -6 # hours after noon
-        self.starting_battery_charge = 1.6e7 # joules
+        self.starting_solar_hour = 0 # hours after noon
+        self.starting_battery_charge = 0 # joules
 

@@ -2,24 +2,40 @@ import network_self
 import numpy as np
 
 
-network = network_self.Network([4,5,1])
+network = network_self.Network([5,100,1])
 
-_input = np.zeros([4,1])
+_input = np.zeros([5,1])
 
-_input[0] = 100
-_input[1] = 100
-_input[2] = 100
-_input[3] = 100
-
-output = network.feedforward_minus_last(_input)
-
-print(output)
-
-_input[0] = -100
-_input[1] = -100
-_input[2] = -100
-_input[3] = -100
+_input[0] = ((3000000./1e6)**-1)/10
+_input[1] = 0
+_input[2] = 0
+_input[3] = 3000000
+_input[4] = 1
 
 output = network.feedforward_minus_last(_input)
 
 print(output)
+
+distance_from_finish = 2998000.
+
+_input[0] = ((distance_from_finish/1e6)**-1)/10
+_input[1] = 0.0001
+_input[2] = 1./3600.
+_input[3] = distance_from_finish
+_input[4] = 1
+
+output2 = network.feedforward_minus_last(_input)
+
+print(output2)
+
+distance_from_finish = 1000
+
+_input[0] = ((distance_from_finish/1e6)**-1)/10
+_input[1] = 0.9
+_input[2] = 14
+_input[3] = distance_from_finish
+_input[4] = 1
+
+output3 = network.feedforward_minus_last(_input)
+
+print(output3)

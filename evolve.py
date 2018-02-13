@@ -63,7 +63,7 @@ class Evolution(object):
 		mutation_rate: standard deviation of mutations
 
 		'''
-		self.mutations = []
+		self.mutations = [] #sdjfasdjflkasfdfjs
 		self.clones = []
 		for n in range(population_size):
 			# randomly generate mutations
@@ -89,7 +89,7 @@ class Evolution(object):
 		voltage stay too low will be punished with a decrease in fitness value.
 		'''
 
-		self.environment = [300000.] # **temporary replacement for environment**
+		self.environment = para.environment # **temporary replacement for environment**
 		self.performances = []
 
 		# runs each clone through simulation to determine its fitness
