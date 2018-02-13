@@ -43,7 +43,7 @@ class Race(object):
 			print(self.argo.race_time, 'seconds')
 			print(self.argo.clock_time + 12., 'military hour')
 			print(self.argo.battery_charge, 'joules in battery')
-			#print(self.argo.irradiance, 'watts into array')
+			print(self.argo.irradiance, 'watts into array')
 
 			if self.inputs[3] < 0:		
 				break 

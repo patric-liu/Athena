@@ -23,7 +23,7 @@ This evolutionary approach relies on accurate yet efficient simulations of relev
 
 * ```generate_environment.py``` - Generates a random race map 
 
-* ```read_weather_data.py``` - Reads live NOAA data for 
+* ```read_weather_data.py``` - Reads live NOAA data
 
 * ```interpret_weather.py``` - Applies 1-d convolution and pooling to high-dimensional weather and map data to extract lower dimensional features to input to the neural network
 
