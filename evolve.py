@@ -63,7 +63,7 @@ class Evolution(object):
 		mutation_rate: standard deviation of mutations
 
 		'''
-		self.mutations = [] #sdjfasdjflkasfdfjs
+		self.mutations = [] 
 		self.clones = []
 		for n in range(population_size):
 			# randomly generate mutations
