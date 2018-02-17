@@ -1,4 +1,4 @@
-import network_self
+'''import network_self
 import numpy as np
 
 
@@ -39,3 +39,11 @@ _input[4] = 1
 output3 = network.feedforward_minus_last(_input)
 
 print(output3)
+'''
+
+import numpy as np
+import math
+from math import cos
+from math import pi
+
+print(123%5)

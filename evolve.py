@@ -1,7 +1,9 @@
 import numpy as np
 import race
+import matplotlib.pyplot as plt
 import all_parameters
 para = all_parameters.Parameters()
+
 
 ''' Uses Evolutionary Models to improve network
 
@@ -51,7 +53,7 @@ class Evolution(object):
 				print("reinitialize network")
 				break
 			# creates child network using clones based on fitness
-			self.reproduce(selection_bias, inheritance_rate, population_size)
+			self.reproduce(selection_bias, inheritance_rate, population_size, generation)
 
 	def clone_parent(self, population_size, mutation_rate):
 		''' Clone Parent
@@ -91,6 +93,7 @@ class Evolution(object):
 
 		self.environment = para.environment # **temporary replacement for environment**
 		self.performances = []
+		self.distances = []
 
 		# runs each clone through simulation to determine its fitness
 		for n in range(population_size): 
@@ -101,14 +104,13 @@ class Evolution(object):
 			# aborts evolution proccess if a fatal error occurs
 			self.abort_evolution = competition.abort
 			# evaluate performance
-			performance = competition.argo.position ** 2 / competition.argo.race_time / 10
+			performance = competition.argo.position ** 2 / competition.argo.race_time / para.environment[0]
 
 			self.performances.append(performance)
 
 		print('average performance: ', np.sum(self.performances)/population_size)
 
-
-	def reproduce(self, selection_bias, inheritance_rate, population_size):
+	def reproduce(self, selection_bias, inheritance_rate, population_size, generation):
 			''' Reproduce - creates a child network based on clone performance
 			A new mutation equal to the weighted average of ckone mutations 
 			is applied to the original network. Weights are proportional 
@@ -147,7 +149,11 @@ class Evolution(object):
 
 			# Determine and display performance of child network
 			competition = race.Race(child_net, self.environment)
-			competition.race()
+			if generation % 100 == True:
+				competition.race(True)
+			else:
+				competition.race()
 			print('new gen: ', competition.argo.position **
-			      2 / competition.argo.race_time / 10)
+			      2 / competition.argo.race_time / para.environment[0])
 
+			plt.plot(competition.distance_tracker)

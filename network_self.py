@@ -1,5 +1,7 @@
 import random
 import numpy as np 
+from math import log as ln
+from math import exp
 
 ''' Neural Network
 Provides functionality for neural network 
@@ -66,7 +68,4 @@ def sigmoid(z):
 	return 1.0/(1.0+np.exp(-z))
 
 def relu(z):
-	if z > 0:
-		return z
-	else:
-		return 0.
+	return ln(1 + exp(z))

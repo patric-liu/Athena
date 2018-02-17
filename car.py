@@ -30,7 +30,7 @@ class Argo(object):
 		# states
 		self.position = starting_position # distance from start of race (meters)
 		self.race_time = starting_time # time since start of race (seconds)
-		self.clock_time = starting_solar_hour # time to solar hour
+		self.solar_hour = starting_solar_hour  # time to solar hour
 		self.battery_charge = starting_charge # charge at start of race
 		self.time_step = time_step # time spent at a velocity
 		self.pack_voltage = 28 * cell_voltage # TEMP voltage of battery pack
@@ -42,7 +42,7 @@ class Argo(object):
 
 		#Battery Constants
 		self.E_regen = para.regen_efficiency
-		self.power_inefficiency = 0.001
+		self.power_inefficiency = para.power_inefficiency
 		self.max_charge = para.battery_max_charge
 
 		#Motion Constants
@@ -57,7 +57,10 @@ class Argo(object):
 	def update_state(self, velocity):
 		self.position += self.time_step * velocity # update position (meters)
 		self.race_time += self.time_step # update time since start of race (seconds)
-		self.clock_time += self.time_step/3600 # update clock time (hours)
+		self.solar_hour += self.time_step/3600  # update clock time (hours)
+		if self.solar_hour > 5: # change time to 8 AM at 5 PM
+			self.solar_hour = -4
+
 		self.update_battery_charge(velocity) # update battery charge
 		#print(self.position, 'meters' , self.race_time, 'seconds')
 		return 
@@ -65,17 +68,18 @@ class Argo(object):
 	def update_battery_charge(self, velocity):
 		# net_power is solar power into panels
 		self.irradiance = self.get_irradiance()
-		net_power = self.irradiance * self.basecell_efficiency * self.panel_area
+		net_power = self.irradiance * self.basecell_efficiency * float(self.panel_area)
 		self.sensor_solar_p = net_power
 
 		# net_power is the net power TO batteries (not in batteries)
 		net_power -= self.motion_loss(velocity)
 
 		# heat loss due to current
+		self.sensor_batteryheatlosspower = net_power
 		self.sensor_battery_heat_loss = (self.power_inefficiency) * net_power**2
-
+		
 		# if net power is positive, battery takes in less power than net_power
-		if net_power > 0:
+		if net_power > 0.:
 			self.sensor_battery_dCharge = net_power - self.sensor_battery_heat_loss
 			self.battery_charge += self.sensor_battery_dCharge * self.time_step
 
@@ -88,7 +92,8 @@ class Argo(object):
 	
 	def get_irradiance(self):
 		# find solar power incident to solar array (not absorbed)
-		self.sensor_solar_p = 1000 * cos(self.clock_time*pi/12)**1.5
+		angle_factor = float(cos(self.solar_hour * pi / 12))
+		self.sensor_solar_p = 1000 * angle_factor**1.5
 		return self.sensor_solar_p
 
 	def motion_loss(self, velocity):
