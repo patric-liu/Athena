@@ -34,6 +34,9 @@ class Race(object):
 		self.distance_tracker = []
 		self.battery_tracker = []
 		self.velocity_tracker = []
+		self.irradiance_tracker = []
+		self.aero_loss_tracker = []
+		self.rolling_loss_tracker = []
 
 
 		while True:
@@ -53,6 +56,9 @@ class Race(object):
 				self.distance_tracker.append(self.argo.position)
 				self.battery_tracker.append(self.argo.battery_charge)
 				self.velocity_tracker.append(velocity * noise_factor)
+				self.irradiance_tracker.append(self.argo.irradiance)
+				self.aero_loss_tracker.append(self.argo.aero_loss)
+				self.rolling_loss_tracker.append(self.argo.rolling_loss)
 
 
 			#print()
