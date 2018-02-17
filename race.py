@@ -32,13 +32,14 @@ class Race(object):
 		max_race_time = self.environment[0] / 20 # time in seconds taken to finish race at n m/s
 
 		self.distance_tracker = []
+		self.battery_tracker = []
+		self.velocity_tracker = []
+
 
 		while True:
 			self.get_nn_inputs()
 
-			if track_performance:
-				self.distance_tracker.append(self.argo.position)
-
+			
 			velocity = self.mutated_network.feedforward_minus_last(self.inputs)
 			# velocity = 30/3.6 # m/s TEMPORARY TESTING
 			
@@ -46,6 +47,13 @@ class Race(object):
 			decrease_factor = (1 + np.exp( -120 * (self.inputs[1] - 0.03) ))
 			noise_factor = np.random.normal(1, para.velocity_noise)
 			self.argo.update_state(velocity * noise_factor)
+
+
+			if track_performance:
+				self.distance_tracker.append(self.argo.position)
+				self.battery_tracker.append(self.argo.battery_charge)
+				self.velocity_tracker.append(velocity * noise_factor)
+
 
 			#print()
 			#print('********************************************')
