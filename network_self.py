@@ -45,8 +45,10 @@ class Network(object):
 	def feedforward(self, a): 			
 		'''Return the output of the network for input 'a'
 		'''
+
+		# activation funciton can be switched between softplus and sigmoid
 		for b, w in zip( self.biases,self.weights ):
-			a = sigmoid(np.array(np.dot(w, a)) + b)
+			a = softplus(np.array(np.dot(w, a)) + b)
 		return a
 
 	def feedforward_minus_last(self, a): 			
@@ -61,11 +63,17 @@ class Network(object):
 		#y = relu(np.dot(w, a) + b)
 		z = np.dot(w, a) + b
 		z = float(z[0][0])
-		return relu(z)
+		return softplus(z)
 
 # element-wise sigmoid activation function
 def sigmoid(z):						
 	return 1.0/(1.0+np.exp(-z))
 
-def relu(z):
+def softplus(z):
 	return ln(1 + exp(z))
+
+def relu(z):
+	if z > 0:
+		return z
+	else:
+		return 0.
