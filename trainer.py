@@ -20,6 +20,3 @@ Train = evolve.Evolution(parameters = Athena.parameters)
 Train.evolve()
 
 print( 'time taken:', round(time.time() - start_time, 2))
-asdfadsfasf
-asdfadsf
-

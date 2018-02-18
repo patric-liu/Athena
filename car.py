@@ -60,8 +60,8 @@ class Argo(object):
 		self.position += self.time_step * velocity # update position (meters)
 		self.race_time += self.time_step # update time since start of race (seconds)
 		self.solar_hour += self.time_step/3600  # update clock time (hours)
-		if self.solar_hour > 5: # change time to 8 AM at 5 PM
-			self.solar_hour = -4
+		if self.solar_hour > 4: # change time to 8 AM at 5 PM
+			self.solar_hour = -5
 
 		self.update_battery_charge(velocity) # update battery charge
 		#print(self.position, 'meters' , self.race_time, 'seconds')

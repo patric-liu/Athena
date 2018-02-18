@@ -10,3 +10,12 @@ will encounter. Maps need to be generated such that when given any time/distance
 traveled, the environment can be returned for the next time step. 
 
 '''
+
+import numpy as np 
+
+squigliness =
+resolution =
+length = 
+
+
+

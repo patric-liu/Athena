@@ -43,9 +43,9 @@ class Race(object):
 			self.get_nn_inputs()
 
 			
-			velocity = self.mutated_network.feedforward_minus_last(self.inputs)
-			# velocity = 30/3.6 # m/s TEMPORARY TESTING
-			
+			velocity = float(self.mutated_network.feedforward(self.inputs)[0][0])
+			# velocity = 30/3.6 # m/s TEMPORARY TESTING	
+
 			# decreases speed if battery power is low
 			decrease_factor = (1 + np.exp( -120 * (self.inputs[1] - 0.03) ))
 			noise_factor = np.random.normal(1, para.velocity_noise)
@@ -99,7 +99,9 @@ class Race(object):
 		'''
 
 		# distance from finish line information
-		distance_from_finish = ((self.environment[0]-self.argo.position))
+		distance_from_finish = ((self.environment[0]-self.argo.position))/1e6
+
+
 		inverse_distance_to_finish = ((self.environment[0]-self.argo.position/1e6)**-1)/10
 
 		# battery state as a percentage
@@ -108,7 +110,7 @@ class Race(object):
 		# time of day - hours from solar hour (noon)
 		time_hour = self.argo.solar_hour/6
 
-		input_size = 5 #para.input_size #number of input neurons
+		input_size = para.input_size #number of input neurons
 
 		# input must be an np.array of shape (input_size, 1)
 		self.inputs = np.zeros( (input_size,1) )
@@ -116,4 +118,3 @@ class Race(object):
 		self.inputs[1] = battery_charge
 		self.inputs[2] = time_hour
 		self.inputs[3] = float(distance_from_finish)
-		self.inputs[4] = float(random.uniform(-2,2))

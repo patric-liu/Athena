@@ -149,7 +149,7 @@ class Evolution(object):
 
 			# Determine and display performance of child network
 			competition = race.Race(child_net, self.environment)
-			if generation % 10 == True:
+			if generation % 200 == True:
 				competition.race(True)
 				print("show graph")
 				plt.figure(1, figsize=(30,50))
