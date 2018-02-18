@@ -149,11 +149,33 @@ class Evolution(object):
 
 			# Determine and display performance of child network
 			competition = race.Race(child_net, self.environment)
-			if generation % 100 == True:
+			if generation % 10 == True:
 				competition.race(True)
+				print("show graph")
+				plt.figure(1, figsize=(30,50))
+				plt.subplot(611)
+				np_battery_tracker = np.array(competition.battery_tracker)/para.battery_max_charge
+				plt.title("battery")
+				plt.plot(np_battery_tracker)
+				plt.subplot(612)
+				plt.title("distance")
+				plt.plot(competition.distance_tracker)
+				plt.subplot(613)
+				plt.title("velocity")
+				plt.plot(competition.velocity_tracker)
+				plt.subplot(614)
+				plt.title("irradiance")
+				plt.plot(competition.irradiance_tracker)
+				plt.subplot(615)
+				plt.title("rolling loss")
+				plt.plot(competition.rolling_loss_tracker)
+				plt.subplot(616)
+				plt.title("aero loss")
+				plt.plot(competition.aero_loss_tracker)
+				plt.savefig("graphs.png")
 			else:
 				competition.race()
 			print('new gen: ', competition.argo.position **
 			      2 / competition.argo.race_time / para.environment[0])
 
-			plt.plot(competition.distance_tracker)
+			#plt.plot(competition.battery_tracker)

@@ -34,7 +34,9 @@ class Argo(object):
 		self.battery_charge = starting_charge # charge at start of race
 		self.time_step = time_step # time spent at a velocity
 		self.pack_voltage = 28 * cell_voltage # TEMP voltage of battery pack
-
+		self.irradiance = 0
+		self.aero_loss = 0
+		self.rolling_loss = 0
 
 	def set_constants(self):
 		#Car Constants
@@ -98,10 +100,10 @@ class Argo(object):
 
 	def motion_loss(self, velocity):
 		# power loss due to aerodynamics
-		self.Aero_loss = velocity**3 * 0.5 * 1.225 * self.Frontal_Area * self.Cd
+		self.aero_loss = velocity**3 * 0.5 * 1.225 * self.Frontal_Area * self.Cd
 
 		# power loss due to rolling resistance
-		self.Rolling_loss = self.mass * 9.81 * self.Crr * velocity
+		self.rolling_loss = self.mass * 9.81 * self.Crr * velocity
 		
-		self.sensor_motion_p_loss = self.Aero_loss + self.Rolling_loss
+		self.sensor_motion_p_loss = self.aero_loss + self.rolling_loss
 		return self.sensor_motion_p_loss

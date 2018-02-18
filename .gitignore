@@ -1,2 +1,4 @@
-temp.pyc
+__pycache__
 *.pyc
+.vscode
+__pycache__/car.cpython-36.pyc
