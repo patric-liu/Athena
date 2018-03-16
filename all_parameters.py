@@ -22,7 +22,7 @@ class Parameters(object):
         self.mutation_rate = 0.05
         self.selection_bias = 1
         self.inheritance_rate = 1.0
-        self.generations = 10000
+        self.generations = 5000
 
         # Training Indicators
 
@@ -34,8 +34,8 @@ class Parameters(object):
 
         # Simulation Parameters
         self.time_step = 600 # seconds
-        self.max_race_time = 3600000 # seconds
-        self.environment = [100000.] # TEMP
+        self.max_race_time = 360000 # seconds
+        self.environment = [3022000.] # TEMP
         self.velocity_noise = 0.000
 
         # Starting Race Conditions
@@ -43,4 +43,14 @@ class Parameters(object):
         self.race_time = 0 # seconds, 0 by default
         self.starting_solar_hour = 3 # hours after noon
         self.starting_battery_charge = 0.0 * self.battery_max_charge # joules
+
+
+        self.panel_tilt = 0
+        self.azimuth_angle = 0
+
+        #Location Constants
+        self.Latitude = 0
+        self.avg_acceleration = 0
+        self.day_of_year = 0
+        self.solar_hour = 0
 

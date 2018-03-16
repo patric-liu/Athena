@@ -69,7 +69,7 @@ def sigmoid(z):
 	return 1.0/(1.0+np.exp(-z))
 
 def softplus(z):
-	return np.log(1 + np.exp(z))
+	return np.log1p(np.exp(z))
 
 def relu(z):
 	if z > 0:

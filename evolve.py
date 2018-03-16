@@ -13,7 +13,6 @@ simulation, and creates a new network ('child') using a weighted
 average of each clone based on its performance ('fitness')
 
 Child then becomes the original network and this is looped over 'generations'
-
 '''
 
 class Evolution(object):
@@ -167,11 +166,11 @@ class Evolution(object):
 				plt.title("irradiance")
 				plt.plot(competition.irradiance_tracker)
 				plt.subplot(615)
-				plt.title("rolling loss")
-				plt.plot(competition.rolling_loss_tracker)
-				plt.subplot(616)
-				plt.title("aero loss")
-				plt.plot(competition.aero_loss_tracker)
+				#plt.title("rolling loss")
+				#plt.plot(competition.rolling_loss_tracker)
+				#plt.subplot(616)
+				#plt.title("aero loss")
+				#plt.plot(competition.aero_loss_tracker)
 				plt.savefig("graphs.png")
 			else:
 				competition.race()

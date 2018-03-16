@@ -26,8 +26,7 @@ class Race(object):
 		
 		# Initializes vehicle, including its position and time
 		self.argo = car.Argo()
-		self.argo.set_constants()
-
+		
 		self.abort = False
 		max_race_time = self.environment[0] / 20 # time in seconds taken to finish race at n m/s
 

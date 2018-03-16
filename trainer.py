@@ -23,7 +23,9 @@ start_time = time.time()
 # initialize new random network/ option to import existing should be added
 Athena = network_self.Network(para.sizes)
 
-# exports network to evolution class
+''' exports network to evolution class. initialization does not happen in 
+evolution so that pretrained networks can be exported.
+'''
 Train = evolve.Evolution(parameters = Athena.parameters)
 
 # executes evolutionary model algorithm
