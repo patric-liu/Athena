@@ -124,7 +124,7 @@ Some potential challenges come to mind
 	How do we validate the performance of a network so we know it will be better than a person?
 
 
-Environment Generation:
+1) Environment Generation:
 
 Problem:
 The simulation domain must be wide enough to encapsulate the different possible states the car might find itself in while driving - two such conditions are it’s position, weather. Of course, we don’t just want the current location and weather, but also future location and weather (since we can get the data). The problem comes with the high dimensionality of this data. We need at least latitude, road bearing, and incline at multiple points along the road to describe relevant position states. And, we need at least wind magnitude, wind bearing, cloud cover, and temperature at multiple positions and times to describe relevant weather states. This could result in thousands, if not tens of thousands of units of input data - both computationally costly and difficult to learn and regularize. 
@@ -140,7 +140,7 @@ Next, lower sample rates is an obvious option to reduce the number of inputs: it
 
 Filtering is an idea that could prove very powerful if well implemented, but I’m not yet sure how to go about it without RL. The idea is to apply layers of filters to the weather and position data to extract features from the data much like a convolutional neural network would from a picture. In fact it would be a CNN. The uncertainty is in how to train a network to recognize these features. I have my doubts on whether evolutionary methods are practical. 
 
-Simulation Accuracy:
+2) Simulation Accuracy:
 
 There are many nice mathematical models for how various aspects of the car should behave, such as:
 
@@ -153,7 +153,7 @@ Change in drag due to change in effective attack angle
 reflectivity of solar array at different angles
 internal resistance of batteries as a function of temperature
 
-Accommodating Unique Circumstances during Training
+3) Accommodating Unique Circumstances during Training
 
 Problem:
 A race has more subtlety than driving at different speeds down a road. There’s required stops, unexpected stops, charging at night and morning, traffic, and trailering. The policy must at the very least still work if stops are made - that is, if a random stop is made, the network could recalibrate and successfully continue after the stop ends. That is to say, the network cannot depend on the ability to continuously drive to work successfully. 
@@ -163,7 +163,7 @@ Add expected stops during training and some random stops depending on what is ex
 Many other circumstances, such as morning and nightly charging can be easily modeled (in simple form)
 If time allows, a feature could be added that allows rewards and punishments to be placed onto the map. For instance, an energy reward could be placed at a evening charging location by a reflective lake. 
 
-Computational Speed:
+4) Computational Speed:
 
 Problem:
 The whole training process requires a substantial amount of computation (~10000 generations) * (~40 population size) * (~1000 time steps) * (computation per time step) = 400 million * # of computations per time step
