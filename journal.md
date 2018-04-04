@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Journal
 
 ## Motivations:
@@ -102,12 +102,10 @@ I believe that a well executed reinforcement learning approach to the problem of
 An alternative I’ve found is an approach called “Evolutionary Strategies” (ES) researched by OpenAI. They found that performance was comparable to reinforcement learning techniques for benchmarks such as Atari and MuJoCo. 
 
 Its advantages lie in its ability to work in sparse reward environments such as a solar car race, where the only true reward is given at the very end. When comparing to reinforcement learning, it’s important to consider this point - the consequences of strategic decisions made at any point during the race do not decay significantly over the duration of the race. This means that it is difficult (though not impossible) to determine rewards to give in the middle of the race. For example, if we offer a reward for getting to Alice Springs quickly, the policy will maximize the sum of these two rewards, which may not maximize the only metric that matters, which is the final average speed. 
->>>>>>> 195999bcb28708fbc1befc16f6ad4e1031ba7631
 
 I’ll summarize the method here, but to read in detail about how it works, check out their blog post: 
 https://blog.openai.com/evolution-strategies/
 
-<<<<<<< HEAD
 1. Start with a randomly initialized network with parameter vector [v]
 2. Create multiple mutated copies of this network by adding a small, random mutation vectors to the parameters of the original network
 3. Allow each copy to interact with an environment (by determining race strategy)
@@ -124,9 +122,8 @@ The only solution to this would be to simulate a race environment, but historica
 
 Fortunately, OpenAI has also researched a method of greatly improving transferability between simulation and reality without hyper-realistic simulations. By randomizing aspects of the simulated environment, one effectively expands the domain of the simulation such that the domain of the physical world is within the simulation domain. 
 
-Venn diagram, simulation as small circle somewhat overlapping real domain, larger simulation circle with real domain inside. A domain represents the set of possible states and the consequences of every action in each of those states. 
+Venn diagram, simulation as small circle somewhat overlapping real domain, larger simulation circle with real domain inside. A domain represents the set of possible states and the consequences of every action in each of those states.
 
-This way, the policy trained in simulation must gain an ability to adapt to unexpected changes in its environment, rather than relying on immutability of environmental characteristics, which can only be found in simulation. 
 =======
 1. Start with a randomly initialized network with parameter vector
 <br/>	 <img src="https://latex.codecogs.com/svg.latex?\Large&space;p" />
@@ -161,7 +158,6 @@ Fortunately, OpenAI has also researched a method of greatly improving transferab
 
 This way, the policy trained in simulation must gain an ability to adapt to unexpected changes in its environment, rather than relying on the immutability of environmental characteristics found only in simulation. 
 
->>>>>>> 195999bcb28708fbc1befc16f6ad4e1031ba7631
 Read more: blog.openai.com/generalizing-from-simulation/
 
 This ends the summary of my motivations for starting project athena. 
@@ -173,7 +169,6 @@ Some potential challenges come to mind
 
 
 1. Environment Generation: 
-<<<<<<< HEAD
 ⋅⋅⋅Road maps and Weather
 2. Simulation Accuracy:
 ⋅⋅⋅What physical properties can be measured to get a more accurate 			simulation?
@@ -215,8 +210,6 @@ Some potential challenges come to mind
 	
 8. Testing
 	How do we validate the performance of a network so we know it will be better than a person?
->>>>>>> 195999bcb28708fbc1befc16f6ad4e1031ba7631
-
 
 Environment Generation:
 
