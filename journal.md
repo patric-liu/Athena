@@ -204,6 +204,7 @@ Solution:
 	Another network could be trained to deal with short-timescale scenarios. It would likely minimize energy spent before returning to the original state. 
 
 8) Testing
+
 Problem:
 	How do we validate network and have confidence in its ability in a week long race if it can't be fully physically validated in without at least a full week of testing?
   
