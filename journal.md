@@ -5,9 +5,7 @@
 
 Solar vehicle racing fundamentally a challenge of energy efficiency and management. When building a solar vehicle, vast amounts of time are rightfully spent on design, manufacturing, and testing - the critical steps for building a reliable, legal, and efficient car. Once at the race, however, the benefits of these efforts are at the peril of a team’s race strategy. Poorly conducted race strategy has the potential to be just as detrimental a flat tire. If successful, Athena will provide this much needed support and allow the vehicle that everyone spends so long designing and building to perform to the best of its ability. 
 
-Race strategy consists of making decisions that depend on variables in the environment (battery state, time of day, predicted weather). While decisions include deciding camp locations, when to have breaks, and whether freely roll down a hill or use regen to gain back some energy, the majority of strategic decision can be boiled down to deciding what velocity to maintain at the present moment. For any given set of environmental variables, there is a single velocity that will maximize the expected final race performance. In this sense, a good policy for strategy could be expressed as a function, with environmental conditions as inputs and velocity as an output:
-
-function
+Race strategy consists of making decisions that depend on variables in the environment (battery state, time of day, predicted weather). While decisions include deciding camp locations, when to have breaks, and whether freely roll down a hill or use regen to gain back some energy, the majority of strategic decision can be boiled down to deciding what velocity to maintain at the present moment. For any given set of environmental variables, there is a single velocity that will maximize the expected final race performance. In this sense, a good policy for strategy could be expressed as a function, with environmental conditions as inputs and velocity as an output.
 
 The ultimate goal of Athena is to find a function such that the velocity given by its output is more likely to lead to success than the velocity decided by a person. Such a function could be called at any moment during the race so long as there is input data, and could adapt to unexpected changes in the environment (e.g. 30 minute delay due to vehicle malfunction).
 
@@ -22,8 +20,11 @@ Luckily, neural networks are a type of function that have a kind of universality
 Naturally, the next question is: How do we construct a useful neural network? Even ignoring the more advanced architectures, vanilla feedforward networks have an abundance of variables and options. 
 
 ⋅⋅* number and size of hidden layers (shape of the network)
+
 ⋅⋅* weights and biases (parameters)
+
 ⋅⋅* type of nonlinearity (activation function)
+
 
 A good way to simplify this problem is by saying that the weights and biases determine the behavior of the function while its shape and activation function determine the resolution/complexity of that function. In this sense, we could first create a method that finds the best parameters given a certain shape and activation function, then worry about optimizing the shape and activation function for accuracy and computational speed. In practice, anything could need adjustments at any time, this is just a good starter mental model. 
 
